@@ -13,28 +13,9 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    background-color: #B2D6FF;
+
   }
-  .card {
-    margin: 15px;
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    -webkit-transition: 0.3s;
-    transition: 0.3s;
-    border-radius: 5px;
-    /* 5px rounded corners */
-  }
-  .card:hover {
-    -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
-  .container {
-    font-size: 1.2rem;
-    padding: 2px 16px;
-  }
-  img {
-    border-radius: 5px 5px 0 0;
-  }
+  
 }
 
 @media only screen and (min-width: 401px) and (max-width: 960px) {
@@ -52,29 +33,9 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    background-color: #F5CF8E;
+
   }
-  .card {
-    margin: 15px;
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    -webkit-transition: 0.3s;
-    transition: 0.3s;
-    border-radius: 5px;
-    /* 5px rounded corners */
-  }
-  .card:hover {
-    -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
-  .container {
-    padding: 2px 16px;
-    font-size: 1.2rem;
-  }
-  img {
-    width: 30rem;
-    border-radius: 5px 5px 0 0;
-  }
+  
 }
 
 @media only screen and (max-width: 400px) {
@@ -92,30 +53,8 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    background-color: #690104;
+    
   }
-  .card {
-    background-color: #0a750f;
-    margin: 15px;
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    -webkit-transition: 0.3s;
-    transition: 0.3s;
-    border-radius: 5px;
-    /* 5px rounded corners */
-  }
-  .card:hover {
-    -webkit-box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
-  .container {
-    padding: 2px 16px;
-    font-size: 1rem;
-  }
-  img {
-    width: 10rem;
-    border-radius: 5px 5px 0 0;
-    border-radius: 5px;
-  }
+  
 }
 /*# sourceMappingURL=App.css.map */

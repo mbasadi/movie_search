@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import Loading from "./loading";
+import '../assets/styles/moviCard.scss';
+import '../assets/styles/app.scss';
 import './App.css';
 import { connect } from 'react-redux'
 import { Fetchingdata, Postingdata } from '../actions/index'
 import { bindActionCreators } from 'redux'
+import DateConverter from '../utils/dateConverter';
+import { Favorite, Bookmark } from '@material-ui/icons';
 class Bagher extends Component {
   constructor(props) {
     super(props);
@@ -14,31 +19,38 @@ class Bagher extends Component {
     this.props.Fetchingdata('FAVEFETCH_MOVIE');
     this.props.Fetchingdata('SAVEFETCH_MOVIE');
   }
+  componentDidUpdate(prevProps) {
+    const x = this.props.favemovie[0];
+    const y = prevProps.favemovie[0];
+    const x2 = this.props.savemovie[0];
+    const y2 = prevProps.savemovie[0];
+
+    if (y && y2) {
+      if (x.results.length !== y.results.length || x2.results.length !== y2.results.length) {
+
+        this.props.Fetchingdata('FAVEFETCH_MOVIE');
+        this.props.Fetchingdata('SAVEFETCH_MOVIE');
+      }
+    }
+  }
   handleClick(type, movie, buttonText) {
     // first determind wich botton is clicked then change the botton text, post data based on request and get the new list of liked and saved list
     if (type === "like") {
       let boulL = false;
-      if (buttonText === "unlike") {
-         boulL = false;
-      } else {
-        boulL = true;
-      }
-      this.props.Postingdata('FAVEPOST_MOVIE',movie.id, boulL);
+      (buttonText === "unlike") ? boulL = false : boulL = true;
+
+      this.props.Postingdata('FAVEPOST_MOVIE', movie.id, boulL);
       this.props.Fetchingdata('FAVEFETCH_MOVIE');
     } else {
       let boulL = false;
-      if (buttonText === "unsave") {
-         boulL = false;
-      } else {
-        boulL = true;
-      }
-      this.props.Postingdata('SAVEPOST_MOVIE',movie.id, boulL);
+      (buttonText === "unsave") ? boulL = false : boulL = true;
+      this.props.Postingdata('SAVEPOST_MOVIE', movie.id, boulL);
       this.props.Fetchingdata('SAVEFETCH_MOVIE');
     }
   };
   render() {
     return (
-//defining the "containermethod" to bulit the cards and compare the current list of movie with lists of liked and saved movies
+      //defining the "containermethod" to bulit the cards and compare the current list of movie with lists of liked and saved movies
       <div>
         {this.containermethod(this.props.movies, this.props.favemovie, this.props.savemovie)}
       </div>
@@ -49,65 +61,56 @@ class Bagher extends Component {
     const fmovies = MoviesL[0];
     const fave = Movfave[0];
     const savei = Movsave[0];
-    if (!fmovies) {
-      return <div>Loading...</div>;
-    }
-    if (!fave) {
-      return <div>Loading...</div>;
-    }
-    if (!savei) {
-      return <div>Loading...</div>;
+    // to prevent undesier cases 
+    if (!fmovies || !fave || !savei) {
+      return <Loading />;
     }
     //comparing lists and determined the botton state
     const picItems = fmovies.results.map(movie => {
       let buttonText1 = 'like';
+      let fCN = "favoriteIcon"
       let buttonText2 = 'save';
+      let wCN = "watchList"
       fave.results.map(ffa => {
         if (movie.id === ffa.id) {
           buttonText1 = 'unlike';
+          fCN = "favoriteIconActive"
         }
       })
       savei.results.map(Saa => {
         if (movie.id === Saa.id) {
           buttonText2 = 'unsave';
+          wCN = "watchListActive"
         }
       })
-
-      if (movie.poster_path === null) {
-        return (
-          <div key={movie.id} className="card" >
-            <div className="container">
-              <p>Can not find the poster</p>
-              <p>{movie.title}</p>
-              <button onClick={() => this.handleClick("like", movie, buttonText1)} className="like">
-                <i className="fa fa-heart"></i>&nbsp;
-              {buttonText1}</button>
-              <button onClick={() => this.handleClick("save", movie, buttonText2)} className="like">
-                <i className="fa fa-heart"></i>&nbsp;
-              {buttonText2}</button>
+      const poster_url = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+      return (
+        <div key={movie.id} className="cardContainer" >
+          <img src={poster_url} alt="pictures are unavailable" className={"poster"} />
+          <div className={"infoWrapper"}>
+            <div>
+              <div className={"title"}>
+                {movie.title}
+              </div>
+              <div className={"release_date"}>
+                {DateConverter(movie.release_date)}
+              </div>
+            </div>
+            <p className={"overview"}>
+              {movie.overview}
+            </p>
+            <div className={"iconsWrapper"}>
+              <Favorite className={fCN}
+                onClick={() => this.handleClick("like", movie, buttonText1)} />
+              <Bookmark className={wCN}
+                onClick={() => this.handleClick("save", movie, buttonText2)} />
             </div>
           </div>
-        )
-      }
-      else {
-        const poster_url = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
-        return (
-          <div key={movie.id} className="card" >
-            <img src={poster_url} alt="pictures are unavailable" />
-            <div className="container">
-              <p>{movie.title}</p>
-              <button onClick={() => this.handleClick("like", movie, buttonText1)} className="like">
-                <i className="fa fa-heart"></i>&nbsp;
-                {buttonText1}</button>
-              <button onClick={() => this.handleClick("save", movie, buttonText2)} className="like">
-                <i className="fa fa-heart"></i>&nbsp;
-              {buttonText2}</button>
-            </div>
-          </div>
-        )
-      }
+        </div>
+      )
+    }
 
-    });
+    );
     return (
       <div className='main'>
         {picItems}
@@ -120,7 +123,7 @@ function mapStateToProps({ movies, favemovie, savemovie }) {
 }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    Fetchingdata:Fetchingdata, Postingdata: Postingdata
+    Fetchingdata: Fetchingdata, Postingdata: Postingdata
   }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Bagher);

@@ -34,6 +34,7 @@ export function Fetchingdata(type,term=null) {
     let request = axios.get(Query);
     return(dispatch) => {
       request.then(({ data }) => {
+        
         dispatch({
           type: out_type,
           payload: data
